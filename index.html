@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Animated Website</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="media.css">
+</head>
+
+<body>
+    <div class="preloader">
+        <div class="preloader-content">
+            <span class="preloader-percent">0%</span>
+        </div>
+    </div>
+    <header>
+        <nav class="gallery-nav">
+            <div class="nav-left"><a href="#home">MATHEUS GARCIA</a></div>
+            <div class="nav-right">
+                <button class="burger-btn" aria-label="Abrir Menu">
+                    <span class="bar bar-top"></span>
+                    <span class="bar bar-bottom"></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- FULLSCREEN OVERLAY MENU -->
+    <div class="menu-overlay">
+        <div class="menu-links-container">
+            <a href="#home" class="menu-link">
+                <img src="assets/img/image 16.png" class="menu-preview" alt="">
+                <span class="link-text">Início</span>
+            </a>
+            <a href="#melhores" class="menu-link">
+                <img src="assets/img/image 14.webp" class="menu-preview" alt="">
+                <span class="link-text">As Melhores</span>
+            </a>
+            <a href="#galeria-ui" class="menu-link">
+                <img src="assets/img/image 17.png" class="menu-preview" alt="">
+                <span class="link-text">Galeria</span>
+            </a>
+            <a href="#sobre" class="menu-link">
+                <img src="assets/img/image 1.webp" class="menu-preview" alt="">
+                <span class="link-text">Sobre mim</span>
+            </a>
+            <a href="#contato" class="menu-link">
+                <img src="assets/img/image 13.webp" class="menu-preview" alt="">
+                <span class="link-text">Contato</span>
+            </a>
+        </div>
+    </div>
+    <div class="stage">
+        <!-- Capas Principais (Agora são 7) -->
+        <img src="assets/img/image 18.png" class="img img-hero h1" data-album="1">
+        <img src="assets/img/image 16.png" class="img img-hero h2" data-album="2">
+        <img src="assets/img/image 17.png" class="img img-hero h3" data-album="3">
+        <img src="assets/img/image 10.webp" class="img img-hero h4" data-album="4">
+        <img src="assets/img/image 6.webp" class="img img-hero h5" data-album="5">
+        <img src="assets/img/image 13.webp" class="img img-hero h6" data-album="6">
+        <img src="assets/img/image 14.webp" class="img img-hero h7" data-album="7">
+    </div>
+
+    <!-- TEXTO DO HERO FIXO NA TELA -->
+    <div class="hero-content">
+        <h1><span>Oi, eu sou</span><span>o Matheus</span><span>Garcia</span></h1>
+        <h2 class="hero-subtitle">Fotógrafo Esportivo</h2>
+        <a href="https://wa.me/5524988598077?text=Oi%20Matheus%2C%20gostaria%20de%20conversar%20sobre%20uma%20sess%C3%A3o!"
+            class="contact-btn hero-btn">agende uma reuniao</a>
+    </div>
+
+    <!-- ANCORAS DE SCROLL INVISÍVEIS -->
+    <section class="hero" id="home"></section>
+
+    <!-- UI DA GALERIA -->
+    <section class="galeria-ui" id="galeria-ui">
+
+
+
+        <!-- Container agora tem overflow-x: auto (scroll horizontal) -->
+        <div class="hitboxes-container">
+            <div class="album-link" data-index="1" data-title="NOTES ON VISION">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>NOTES ON VISION</h3>
+                    <p>12 IMAGES</p>
+                </div>
+            </div>
+            <div class="album-link" data-index="2" data-title="UNDESIGNATED">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>UNDESIGNATED</h3>
+                    <p>09 IMAGES</p>
+                </div>
+            </div>
+            <div class="album-link" data-index="3" data-title="FLORENCE">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>FLORENCE</h3>
+                    <p>20 IMAGES</p>
+                </div>
+            </div>
+            <div class="album-link" data-index="4" data-title="COHERENCE">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>COHERENCE</h3>
+                    <p>15 IMAGES</p>
+                </div>
+            </div>
+            <div class="album-link" data-index="5" data-title="WESTERN">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>WESTERN</h3>
+                    <p>08 IMAGES</p>
+                </div>
+            </div>
+            <div class="album-link" data-index="6" data-title="SHADOWS">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>SHADOWS</h3>
+                    <p>14 IMAGES</p>
+                </div>
+            </div>
+            <div class="album-link" data-index="7" data-title="LIGHTS">
+                <div class="album-hitbox"></div>
+                <div class="album-label">
+                    <h3>LIGHTS</h3>
+                    <p>11 IMAGES</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÁREA DOS ÁLBUNS COM SCROLL NATIVO INDEPENDENTE (Agora 100vh) -->
+        <div class="album-modals">
+            <div class="album-scroll-modal" id="album-modal-1">
+                <div class="album-scroll-col">
+                    <img src="assets/img/image 15.webp" class="modal-img">
+                    <img src="assets/img/image 5.png" class="modal-img">
+                    <img src="assets/img/image 6.webp" class="modal-img">
+                    <img src="assets/img/image 1.webp" class="modal-img">
+                </div>
+            </div>
+            <div class="album-scroll-modal" id="album-modal-2">
+                <div class="album-scroll-col">
+                    <img src="assets/img/image 10.webp" class="modal-img">
+                    <img src="assets/img/image 6.webp" class="modal-img">
+                    <img src="assets/img/image 13.webp" class="modal-img">
+                    <img src="assets/img/image 14.webp" class="modal-img">
+                </div>
+            </div>
+
+            <!-- Modais Auxiliares para que o GSAP consiga scrolar sem quebrar o layout das extras caso sejam acidionadas depois -->
+            <div class="album-scroll-modal" id="album-modal-3">
+                <div class="album-scroll-col">
+                    <img src="assets/img/image 16.png" class="modal-img">
+                    <img src="assets/img/image 17.png" class="modal-img">
+                    <img src="assets/img/image 18.png" class="modal-img">
+                    <img src="assets/img/image-Photoroom (42) 1.png" class="modal-img">
+                </div>
+            </div>
+            <div class="album-scroll-modal" id="album-modal-4">
+                <div class="album-scroll-col">
+                    <img src="assets/img/image 15.webp" class="modal-img">
+                    <img src="assets/img/image 5.png" class="modal-img">
+                    <img src="assets/img/image 6.webp" class="modal-img">
+                    <img src="assets/img/image 1.webp" class="modal-img">
+                </div>
+            </div>
+            <div class="album-scroll-modal" id="album-modal-5">
+                <div class="album-scroll-col">
+                    <img src="assets/img/Airbrush-IMAGE-ENHANCER-1773459913553-1773459913553 1.webp" class="modal-img">
+                    <img src="assets/img/Airbrush-IMAGE-ENHANCER-1773460023750-1773460023750 1.webp" class="modal-img">
+                    <img src="assets/img/image 10.webp" class="modal-img">
+                    <img src="assets/img/image 6.webp" class="modal-img">
+                </div>
+            </div>
+            <div class="album-scroll-modal" id="album-modal-6">
+                <div class="album-scroll-col">
+                    <img src="assets/img/image 13.webp" class="modal-img">
+                    <img src="assets/img/image 14.webp" class="modal-img">
+                    <img src="assets/img/image 16.png" class="modal-img">
+                    <img src="assets/img/image 17.png" class="modal-img">
+                </div>
+            </div>
+            <div class="album-scroll-modal" id="album-modal-7">
+                <div class="album-scroll-col">
+                    <img src="assets/img/image 18.png" class="modal-img">
+                    <img src="assets/img/image 1.webp" class="modal-img">
+                    <img src="assets/img/image 5.png" class="modal-img">
+                    <img src="assets/img/image-Photoroom (42) 1.png" class="modal-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTERS FIXOS NO ROOT PARA SOBREPOSIÇÃO SUPREMA -->
+    <div class="gallery-footer default-footer">
+        <span class="giant-num">07</span>
+        <!-- Removidas as setas -->
+        <h2 class="giant-title">GALLERY</h2>
+    </div>
+
+    <div class="gallery-footer album-footer">
+        <span class="giant-num album-active-num">09</span>
+        <h2 class="giant-title album-active-title">UNDESIGNATED</h2>
+        <!-- Botão X removido -->
+    </div>
+
+    <!-- SEÇÃO SOBRE MIM -->
+    <section class="about-section" id="sobre">
+        <div class="about-row">
+            <div class="about-img-box">
+                <img src="assets/img/image 1.webp" alt="Photographer">
+            </div>
+            <div class="about-text-box">
+                <p>Especializado em congelar o movimento e enxergar a emoção em frações de segundo, acredito que cada
+                    esporte conta uma história de superação e paixão pura.</p>
+            </div>
+        </div>
+
+        <div class="about-row reverse">
+            <div class="about-text-box flex-col">
+                <div class="div-cards">
+                    <div class="card">
+                        <div class="icon-card">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="13" r="8"></circle>
+                                <path d="M12 9v4l2 1"></path>
+                                <path d="M10 2h4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="title-card">TIMING</h3>
+
+                    </div>
+                    <div class="card">
+                        <div class="icon-card">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M12 3v18"></path>
+                                <path d="M3 12h18"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="title-card">PRECISÃO</h3>
+
+                    </div>
+                    <div class="card">
+                        <div class="icon-card">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="title-card">MOMENTUM</h3>
+
+                    </div>
+                </div>
+                <h2 class="split-title">Quem sou eu</h2>
+            </div>
+            <div class="about-img-box align-right">
+                <img src="assets/img/mat.png" alt="Matheus">
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO CONTATO -->
+    <section class="contact-section" id="contato">
+        <div class="contact-left">
+            <!-- Fotos no estilo colagem -->
+            <img src="assets/img/image 17.png" class="collage-img img-c1">
+            <img src="assets/img/image 16.png" class="collage-img img-c2">
+            <img src="assets/img/image 1.webp" class="collage-img img-c3">
+            <img src="assets/img/image 10.webp" class="collage-img img-c4">
+            <img src="assets/img/image 5.png" class="collage-img img-c5">
+            <img src="assets/img/mat.png" class="collage-img img-c6">
+        </div>
+
+        <div class="contact-right">
+            <div class="contact-box-top">
+                <a href="#" class="contact-link">email@exemplo.com</a>
+                <a href="#" class="contact-link">@instagram</a>
+                <a href="#" class="contact-link">WhatsApp</a>
+            </div>
+
+            <a href="https://wa.me/5524988598077?text=Oi%20Matheus%2C%20gostaria%20de%20conversar%20sobre%20uma%20sess%C3%A3o!"
+                class="contact-btn contato-btn">agende uma reuniao</a>
+
+            <h2 class="split-title contact-title">Contato</h2>
+        </div>
+    </section>
+
+    <!-- Libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

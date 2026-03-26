@@ -1,0 +1,784 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'clash';
+    src: url('assets/fonts/clash-display-font/ClashDisplay-Light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'clash';
+    src: url('assets/fonts/clash-display-font/ClashDisplay-Regular.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'clash';
+    src: url('assets/fonts/clash-display-font/ClashDisplay-Medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'clash';
+    src: url('assets/fonts/clash-display-font/ClashDisplay-Semibold.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'clash', sans-serif;
+    font-weight: 400;
+    background-color: #0d0d0d;
+    color: #efefef;
+    overflow-x: hidden;
+}
+
+/* 
+ * O Navegador SEMPRE injeta font-weight: bold (700) em tags H1, H2 e H3 nativamente.
+ * Essa linha neutraliza o navegador e força os títulos a herdarem o "400" do body automaticamente.
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: inherit;
+}
+
+/* =========================================
+   1. STAGE (Visual Fake)
+   ========================================= */
+.stage {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    /* Estágio de imagens sempre no fundo */
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: transform;
+    /* Importante para o scroll horizontal rápido */
+}
+
+.img {
+    position: absolute;
+    width: 25vw;
+    max-width: 350px;
+    height: auto;
+    border-radius: 4px;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+    will-change: transform, opacity;
+}
+
+/* =========================================
+   2. SCROLL ANCHORS
+   ========================================= */
+.hero {
+    height: 100vh;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-content {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    text-align: center;
+    z-index: 150;
+    /* Texto acima das camadas da galeria inicialmente */
+    pointer-events: none;
+}
+
+.hero-content a {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    pointer-events: auto;
+}
+
+.hero-content h1 {
+    width: 70%;
+    font-size: 8vw;
+    line-height: .8;
+    letter-spacing: -0.02em;
+    text-shadow: 0 5px 30px rgba(0, 0, 0, 0.8);
+    /* Ajuda na legibilidade por cima das fotos normais */
+}
+
+.hero-content h1>span {
+    display: block;
+}
+
+.hero-content h1>span:nth-child(1) {
+    text-align: start;
+}
+
+.hero-content h1>span:nth-child(2) {
+    text-align: end;
+}
+
+.hero-content h1>span:nth-child(3) {
+    text-align: center;
+}
+
+.hero-content h2 {
+    font-size: 1.6vw;
+    color: #929292;
+    margin: 30px;
+    font-weight: 300;
+}
+
+/* 
+ * O sistema de scroll agora é gerenciado puramente pelo GSAP Pinning.
+ * Não precisamos mais de alturas fixas em seções vazias.
+ */
+
+/* =========================================
+   3. UI DA GALERIA HORIZONTAL
+   ========================================= */
+.galeria-ui {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    opacity: 1;
+    /* Visível, filhos controlam as opacidades agora */
+    pointer-events: none;
+}
+
+/* Nav superior (Global Fixa) */
+.gallery-nav {
+    position: fixed;
+    top: 4vh;
+    width: 100%;
+    padding: 0 4vw;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8vw;
+    letter-spacing: 0.1em;
+    color: #ccc;
+    z-index: 3000;
+    /* Super z-index para ficar acima do menu overlay quando ele cobrir a tela */
+}
+
+.gallery-nav a {
+    color: #ccc;
+    text-decoration: none;
+    margin-left: 2vw;
+}
+
+/* Hitboxes container agora rola através da própria timeline do FASE 7 */
+.hitboxes-container {
+    opacity: 0;
+    /* GSAP acende na Fase 6 */
+    position: absolute;
+    top: 40vh;
+    left: 0;
+    width: max-content;
+    /* Deixa esticar o quanto for necessário p/ os flex itens */
+    height: 55vh;
+    /* Altura do container */
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    /* Alinha os itens no centro */
+    padding: 0 5vw;
+    /* Padding lateral */
+    gap: 2vw;
+    /* Removemos o overflow, ele será transladado nativamente pelo scrub do GSAP! */
+}
+
+.album-link {
+    position: relative;
+    /* Agora é item do Flex normal! */
+    flex: 0 0 auto;
+    width: 16.25vw;
+    /* Exatamente 25vw * 0.65 (GSAP Fase 5 scale) */
+    aspect-ratio: 4 / 5;
+    display: flex;
+    justify-content: center;
+}
+
+.album-hitbox {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* Textos da galeria */
+.album-label {
+    position: absolute;
+    top: calc(100% + 15px);
+    text-align: center;
+    transform: scale(1.53);
+    /* 1 / 0.65 */
+    opacity: 1;
+    pointer-events: none;
+}
+
+.album-label h3 {
+    font-size: 0.8vw;
+    letter-spacing: 0.05em;
+    margin-bottom: 5px;
+}
+
+.album-label p {
+    font-size: 0.6vw;
+    color: #888;
+    letter-spacing: 0.05em;
+}
+
+/* =========================================
+   4. FOOTERS
+   ========================================= */
+.gallery-footer {
+    position: fixed;
+    bottom: 5vh;
+    width: 100%;
+    padding: 0 4vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    pointer-events: none;
+    /* Só pra garantir */
+    z-index: 100;
+    /* Superior a todos os componentes, fotos, mods e stages! */
+}
+
+.default-footer {
+    opacity: 0;
+    /* GSAP acende no momento 0 da timeline */
+}
+
+.album-footer {
+    display: none;
+    opacity: 0;
+}
+
+/* =========================================
+   5. MODAIS DE SCROLL NATIVOS (FOTOS DOS ÁLBUNS)
+   ========================================= */
+.album-modals {
+    position: absolute;
+    inset: 0;
+    z-index: 25;
+    pointer-events: none;
+}
+
+.album-scroll-modal {
+    position: absolute;
+    inset: 0;
+    /* Garante tamanho absolutamente idêntico ao .stage independentemente de scrollbars escondidas */
+    overflow-y: auto;
+    /* SCROLL NATIVO ISOLADO AQUI! */
+    display: none;
+    pointer-events: auto;
+    /* Recebe o scroll do dedo/roda do mouse */
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    z-index: 50;
+    /* Fica por cima da footer para dar a ilusão real de modal */
+}
+
+.album-scroll-modal::-webkit-scrollbar {
+    display: none;
+}
+
+.album-scroll-col {
+    position: absolute;
+    left: 50%;
+    /* margin-left gerenciado via JS pra bater a coordenaada da GSAP! */
+    display: flex;
+    flex-direction: column;
+    gap: 3vh;
+    width: 25vw;
+    /* 100% de preenchimento idêntico ao GSAP */
+    max-width: 350px;
+    /* IDÊNTICO PARA A CAPA GSAP */
+    align-items: center;
+    padding-bottom: 10vh;
+}
+
+.modal-img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+}
+
+.giant-num {
+    font-size: 10vw;
+    line-height: 0.7;
+    letter-spacing: -0.05em;
+}
+
+.giant-title {
+    font-size: 10vw;
+    line-height: 0.7;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   6. ABOUT SECTION
+   ========================================= */
+.about-section {
+    position: relative;
+    z-index: 200;
+    background-color: #0d0d0d;
+    height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 5vh;
+    visibility: hidden;
+    /* Revelada pelo JS após o ScrollTrigger ser criado */
+}
+
+.about-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.about-row.reverse {
+    align-items: flex-end;
+}
+
+.about-img-box {
+    width: 25vw;
+    height: 35vh;
+    /* restringe para exatos 35% da tela */
+    margin-right: 5vw;
+}
+
+.about-img-box.align-right {
+    width: 30vw;
+    height: 40vh;
+    /* restringe para exatos 40% da tela */
+    margin-right: 0;
+    margin-left: 5vw;
+}
+
+.about-img-box img {
+    width: 100%;
+    height: 100%;
+    /* Permite object-fit agir nos limites do container e corta excessos sem esticar layout */
+    object-fit: cover;
+}
+
+.about-text-box {
+    flex: 1;
+}
+
+.about-text-box.flex-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    height: 100%;
+}
+
+.about-text-box p {
+    font-size: min(6vw, 7vh);
+    /* Trava no crescimento vertical desenfreado */
+    line-height: 1.5;
+    font-weight: 300;
+    color: #ececec;
+}
+
+.split-title {
+    font-size: 8vw;
+    line-height: 0.7;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+}
+
+/* For split text */
+.split-char {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+.flex-col .div-cards {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 1vw;
+    width: 100%;
+    height: 45%;
+    /* Altura controlada para caber no 100vh com o título */
+    margin-bottom: 4vh;
+}
+
+.card {
+    flex: 1;
+    background-color: #1a1a1a;
+    padding: 3vh 1.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+}
+
+.card:hover {
+    background-color: #2a2a2a;
+    border-color: #444;
+    transform: translateY(-5px);
+}
+
+.icon-card {
+    width: 2.5vw;
+    height: 2.5vw;
+    color: #efefef;
+    margin-bottom: 2vh;
+}
+
+.icon-card svg {
+    width: 100%;
+    height: 100%;
+}
+
+.card h3.title-card {
+    font-size: 1.3vw;
+    line-height: 1.2;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5vh;
+    color: #c1c1c1;
+}
+
+/* =========================================
+   7. CONTACT SECTION
+   ========================================= */
+.contact-section {
+    position: relative;
+    z-index: 200;
+    background-color: #0d0d0d;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    /* Impede a colagem de rolar os bounds e engolir o scroll nativamente */
+    visibility: hidden;
+    /* Revelada pelo JS junto com o About após o pin ser criado */
+}
+
+/* LADO ESQUERDO: A COLAGEM */
+.contact-left {
+    position: relative;
+    flex: 1;
+    height: 100vh;
+}
+
+.collage-img {
+    position: absolute;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+    width: 18vw;
+    max-width: 250px;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Posições relativas de fotos totalmente imersas num scatter arrojado */
+.img-c1 {
+    top: -15%;
+    left: 10%;
+    transform: rotate(-15deg) scale(0.9);
+    z-index: 2;
+}
+
+.img-c2 {
+    top: -5%;
+    left: 55%;
+    transform: rotate(12deg) scale(1.1);
+    z-index: 3;
+}
+
+.img-c3 {
+    top: 20%;
+    left: -5%;
+    transform: rotate(-5deg) scale(0.8);
+    z-index: 1;
+}
+
+.img-c4 {
+    top: 50%;
+    left: 55%;
+    transform: rotate(-18deg) scale(1);
+    z-index: 4;
+}
+
+.img-c5 {
+    bottom: 15%;
+    left: 20%;
+    transform: rotate(-8deg) scale(0.85);
+    z-index: 2;
+}
+
+.img-c6 {
+    bottom: -5%;
+    left: 5%;
+    transform: rotate(8deg) scale(0.9);
+    z-index: 3;
+}
+
+/* LADO DIREITO: INTERFACE MINIMALISTA */
+.contact-right {
+    flex: 0 0 50vw;
+    /* Exatos 50% de tela de largura */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    /* Encosta as caixas na direita */
+    padding: 5vh 4vw;
+    /* Mesmo margin master global do projeto (5vh V, 4vw H) */
+}
+
+.contact-box-top {
+    padding: 4vh 4vw;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    border-radius: 2px;
+    width: 25vw;
+    align-items: flex-end;
+    /* Alinha o texto dentro da caixa */
+}
+
+/* =========================================
+   8. MENU OVERLAY & BURGER BUTTON
+   ========================================= */
+
+/* Ícone Hambúrguer Assimétrico */
+
+.nav-left {
+    color: #efefef;
+    font-weight: 500;
+}
+
+.burger-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Alinha o peso à direita */
+    gap: 8px;
+    /* Espaço entre as barras */
+    width: 35px;
+    z-index: 1001;
+    /* Fica em cima pro caso geral */
+}
+
+.burger-btn:hover .bar {
+    background-color: #ffffff;
+}
+
+.burger-btn:hover .bar-bottom {
+    width: 100%;
+}
+
+.bar {
+    background-color: #828282;
+    height: 3px;
+    border-radius: 1px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+}
+
+.bar-top {
+    width: 100%;
+    transform-origin: center;
+}
+
+.bar-bottom {
+    width: 60%;
+    /* Traço charmoso mais curto */
+    transform-origin: center;
+}
+
+/* ESTADO ABERTO (ÍCONE X) */
+.burger-btn.open .bar-top {
+    transform: translateY(5.5px) rotate(45deg);
+}
+
+.burger-btn.open .bar-bottom {
+    width: 100%;
+    transform: translateY(-5.5px) rotate(-45deg);
+}
+
+.burger-btn.open .bar {
+    background-color: #ffffff;
+    /* Brilha branco total no fundo escuro do menu */
+}
+
+/* OVERLAY DE TELA CHEIA */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0b0b0b;
+    /* Fundo puro e pesado */
+    z-index: 2500;
+    display: flex;
+    flex-direction: column;
+    padding: 4vh 4vw;
+
+    /* Configuração inicial nula que o Javascript assume controle */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-2%);
+}
+
+.menu-links-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10vh;
+    /* Desce para dar espaço pro header fixo lá em cima */
+}
+
+.menu-link {
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: min(8vw, 10vh);
+    /* Escala monumental */
+    font-weight: 400;
+    /* Peso Base +100 */
+    border-bottom: 1px solid #333333;
+    padding: 2vh 0;
+    transition: 0.3s ease;
+    position: relative;
+}
+
+.menu-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 220px;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 4500;
+    /* Acima do menu-overlay (2500) */
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+}
+
+.menu-link:hover {
+    font-weight: 200;
+    /* Emagrece o titulo (-100) ao interagir */
+    color: #aeaeae;
+}
+
+.menu-link:last-child {
+    border-bottom: 1px solid #333333;
+    /* Mantém a estica pro último contato */
+}
+
+.link-text {
+    display: inline-block;
+    will-change: transform;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.contact-link {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-size: min(2vw, 2.5vh);
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+    color: #aeaeae;
+}
+
+.contact-btn {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: min(1.8vw, 2.2vh);
+    padding: 3vh 0;
+    width: 25vw;
+    /* Mesma largura geometrica do quadrado de contato */
+    text-align: center;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+    margin-bottom: auto;
+    /* Empurra si mesmo pro meio exato por causa do space-between flex */
+    margin-top: 15vh;
+    /* Respira em relacao as redes sociais de cima */
+}
+
+.contact-btn:hover {
+    background-color: #444444;
+}
+
+.contact-title {
+    margin-top: auto;
+    font-size: min(15vw, 20vh);
+    /* Enorme quebrando recordes verticalmente */
+    line-height: 0.8;
+    margin-right: -0.5vw;
+}
+
+/* =========================================
+   10. PRELOADER
+   ========================================= */
+.preloader {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0b0b0b;
+    z-index: 5000;
+    /* Acima de TUDO */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preloader-percent {
+    font-size: min(15vw, 20vh);
+    font-weight: 300;
+    color: #efefef;
+    font-variant-numeric: tabular-nums;
+    /* Evita que o texto 'pule' conforme os numeros mudam */
+    letter-spacing: -0.05em;
+}

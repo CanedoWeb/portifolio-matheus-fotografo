@@ -1,0 +1,317 @@
+/* =========================================
+   ESTILOS RESPONSIVOS (MOBILE)
+   Projetado para telas até 768px
+   ========================================= */
+
+@media (max-width: 768px) {
+
+    /* 1. ESTRUTURA GERAL */
+    .stage .img {
+        width: 80vw;
+        /* Imagens maiores para mobile */
+        max-width: none;
+    }
+
+    /* 2. HERO CONTENT */
+    .hero-content {
+        flex-direction: column;
+        justify-content: end;
+        align-items: center;
+        text-align: center;
+        padding: 10vh 8vw;
+    }
+
+    .hero-content h1 {
+        font-size: 15vw;
+        line-height: 0.85;
+        letter-spacing: -0.04em;
+        width: 100%;
+    }
+
+    /* Versão mobile mantendo o estilo escadeado */
+    .hero-content h1>span {
+        display: block;
+        margin-bottom: 1.5vh;
+        width: 99%;
+    }
+
+    .hero-content h1>span:nth-child(1) {
+        text-align: start;
+    }
+
+    .hero-content h1>span:nth-child(2) {
+        text-align: end;
+    }
+
+    .hero-content h1>span:nth-child(3) {
+        text-align: center;
+    }
+
+    .hero-content h2 {
+        font-size: 5vw;
+        margin: 4vh 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-btn {
+        opacity: 0;
+        width: 80vw;
+        font-size: 4vw;
+        padding: 2.5vh 0;
+        margin: 0 auto;
+        inset: auto 0;
+        display: block;
+        /* Garante que o margin: auto funcione */
+    }
+
+    /* 3. HEADER & NAV */
+    .gallery-nav {
+        padding: 4vh 6vw;
+        font-size: 3.5vw;
+        /* Logo um pouco maior no mobile */
+        letter-spacing: 0.15em;
+    }
+
+    .nav-left {
+        font-weight: 500;
+        color: #efefef;
+    }
+
+    /* 5. SEÇÃO SOBRE (MOBILE) */
+    .about-section {
+        display: flex;
+        flex-direction: column;
+        height: auto !important;
+        /* Só o tamanho do conteúdo */
+        padding: 5vh 8vw;
+        gap: 4vh;
+        justify-content: flex-start;
+    }
+
+    /* Aplana a hierarquia para que o 'order' do flexbox funcione em todos os elementos */
+    .about-row,
+    .about-text-box.flex-col {
+        display: contents;
+    }
+
+    /* 1. Imagem sentando BANCO (Row 2 agora em order 1) */
+    .about-row:nth-child(2) .about-img-box {
+        order: 1;
+        width: 100% !important;
+        height: auto;
+        margin: 0 !important;
+    }
+
+    /* 2. Texto descritivo (Row 1) */
+    .about-row:nth-child(1) .about-text-box {
+        order: 2;
+    }
+
+    /* 3. Cards */
+    .div-cards {
+        order: 3;
+        height: auto !important;
+        margin-bottom: 0 !important;
+        gap: 3vw;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .card {
+        padding: 2.5vh 3vw;
+        flex: 1;
+    }
+
+    .title-card {
+        font-size: 3vw !important;
+    }
+
+    .icon-card {
+        width: 7vw;
+        height: 7vw;
+    }
+
+    /* 4. Imagem deitado CHÃO (Row 1 agora em order 4) */
+    .about-row:nth-child(1) .about-img-box {
+        order: 4;
+        width: 100% !important;
+        height: auto;
+        margin: 0 !important;
+    }
+
+    /* 5. Título no rodapé */
+    .split-title {
+        order: 5;
+        font-size: 11vw;
+        text-align: center;
+        width: 100%;
+        margin-top: 2vh;
+    }
+
+    .about-text-box p {
+        font-size: 5vw;
+        line-height: 1.4;
+        font-weight: 300;
+        text-align: left;
+    }
+
+    /* 4. GALERIA UI (MOBILE) */
+    .hitboxes-container {
+        gap: 5vw;
+        /* 80vw (img) + 5vw (gap) = 85vw para bater com o x: i * 85 do JS */
+        padding: 0 10vw;
+        /* Alinha o centro da primeira img (40vw) no centro da tela (50vw) */
+    }
+
+    .album-scroll-col {
+        width: 80vw;
+        margin: 0 auto;
+    }
+
+    .default-footer {
+        padding: 2vh 6vw;
+        align-items: center;
+        bottom: 3vh;
+        mix-blend-mode: normal;
+    }
+
+    .giant-num {
+        font-size: 10vw;
+        line-height: 1;
+        background: transparent;
+    }
+
+    .giant-title {
+        font-size: 11vw;
+        /* Título maior conforme solicitado */
+        letter-spacing: 0.1em;
+        background: transparent;
+    }
+
+    .album-label {
+        bottom: 15vh;
+        width: 80vw;
+        /* Travado na largura da imagem */
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+    }
+
+    .album-label h3 {
+        font-size: 7vw;
+        line-height: 1.1;
+    }
+
+    .album-label p {
+        font-size: 3.2vw;
+        margin-top: 0.5vh;
+    }
+
+    /* Hitboxes para touch mais generosas */
+    .album-link {
+        width: 80vw;
+        height: 60vh;
+    }
+
+    /* 6. SEÇÃO CONTATO (MOBILE) */
+    .contact-section {
+        display: flex;
+        flex-direction: column;
+        height: auto !important;
+        padding: 5vh 0;
+        width: 100%;
+        gap: 0;
+        visibility: visible !important;
+        z-index: 200 !important;
+        position: relative;
+        background-color: #0d0d0d;
+    }
+
+    .contact-left {
+        width: 100%;
+        height: 50vh !important;
+        flex: none !important;
+        /* Isso permite que o height funcione */
+        position: relative;
+        overflow: visible;
+        margin-bottom: 5vh;
+    }
+
+    .collage-img {
+        width: 30vw !important;
+        /* Fotos um pouco menores no mobile */
+        max-width: 200px;
+    }
+
+    /* Reposicionamento artístico para o scatter mobile */
+    .img-c1 {
+        top: 0%;
+        left: 15%;
+        transform: rotate(-10deg) scale(0.9);
+    }
+
+    .img-c2 {
+        top: 10%;
+        left: 70%;
+        transform: rotate(15deg) scale(1);
+    }
+
+    .img-c3 {
+        top: 30%;
+        left: -5%;
+        transform: rotate(-5deg) scale(0.85);
+    }
+
+    .img-c4 {
+        top: 40%;
+        left: 50%;
+        transform: rotate(-12deg) scale(1.1);
+    }
+
+    .img-c5 {
+        bottom: 5%;
+        left:20%;
+        transform: rotate(-8deg) scale(0.9);
+    }
+
+    .img-c6 {
+        bottom: -10%;
+        left: 65%;
+        transform: rotate(10deg) scale(1);
+    }
+
+    .contact-right {
+        flex: none;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        padding: 5vh 8vw;
+    }
+
+    .contact-box-top {
+        border: 1px solid yellow;
+        width: 100%;
+        align-items: center;
+        padding: 0;
+        margin-bottom: 6vh;
+    }
+
+    .contact-link {
+        font-size: 6vw;
+        letter-spacing: 0;
+    }
+
+    .contato-btn {
+        width: 85vw;
+        font-size: 4.5vw;
+        margin-bottom: 8vh;
+    }
+
+    .contact-title {
+        font-size: 16vw !important;
+        text-align: center;
+        width: 100%;
+        line-height: 0.8;
+    }
+}
