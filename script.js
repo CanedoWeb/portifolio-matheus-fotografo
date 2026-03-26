@@ -148,8 +148,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 scrollTrigger: {
                     trigger: ".hero",
                     start: "top top",
-                    end: "+=1000%",
-                    scrub: 1,
+                    end: isDesktop ? "+=1000%" : "+=1500%", // Mobile mais longo = mais devagar
+                    scrub: 2, // Mais suavização para o scroll rápido do cel
                     pin: true,
                     invalidateOnRefresh: true
                 }
