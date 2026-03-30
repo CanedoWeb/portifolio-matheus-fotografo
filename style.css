@@ -604,6 +604,27 @@ h6 {
     width: 100%;
 }
 
+/* FOOTER DE COPYRIGHT */
+.contact-footer {
+    position: absolute;
+    bottom: 3vh;
+    right: 4vw; /* Alinhado na direita no desktop */
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.15em;
+    font-family: var(--font-clash);
+    font-weight: 400;
+}
+
+.contact-footer a {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+}
+
+.contact-footer a:hover {
+    color: #fff;
+}
+
 .bar {
     background-color: #828282;
     height: 3px;
