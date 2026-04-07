@@ -173,6 +173,39 @@
         margin: 0 auto;
     }
 
+    /* CAROUSEL NAVIGATION BUTTONS */
+    .mobile-nav-btn {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 12vw;
+        height: 12vw;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .prev-btn { left: 4vw; }
+    .next-btn { right: 4vw; }
+
+    .mobile-nav-btn:active {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-50%) scale(0.9);
+    }
+
+    .mobile-nav-btn:disabled, .mobile-nav-btn[style*="opacity: 0"] {
+        pointer-events: none;
+    }
+
     .default-footer {
         padding: 2vh 6vw;
         align-items: center;
@@ -275,7 +308,7 @@
 
     .img-c5 {
         bottom: 5%;
-        left:20%;
+        left: 20%;
         transform: rotate(-8deg) scale(0.9);
     }
 

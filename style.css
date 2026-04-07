@@ -625,6 +625,11 @@ h6 {
     color: #fff;
 }
 
+/* CAROUSEL BUTTONS - ESCONDIDOS NO DESKTOP */
+.mobile-nav-btn {
+    display: none;
+}
+
 .bar {
     background-color: #828282;
     height: 3px;

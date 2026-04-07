@@ -148,10 +148,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 scrollTrigger: {
                     trigger: ".hero",
                     start: "top top",
-                    end: isDesktop ? "+=1000%" : "+=1500%", // Mobile mais longo = mais devagar
+                    end: isDesktop ? "+=1000%" : "+=600%", // Mobile mais curto para dar o tranco na galeria e soltar pro próximo scroll
                     scrub: 1.5, // Mais suavização para o scroll rápido do cel
                     pin: true,
-                    invalidateOnRefresh: true
+                    invalidateOnRefresh: true,
+                    snap: isMobile ? { snapTo: 1, duration: 0.3, ease: "power1.inOut" } : false // Gruda na Galeria
+
                 }
             });
 
@@ -230,17 +232,67 @@ document.addEventListener("DOMContentLoaded", (event) => {
             // Label GALERIA
             mainTl.addLabel("galeria");
 
-            // FASE 7 — Scroll Horizontal
-            mainTl.to('.hitboxes-container, .stage', {
-                x: () => {
-                    const container = document.querySelector('.hitboxes-container');
-                    return -(container.scrollWidth - window.innerWidth);
-                },
-                ease: "none",
-                duration: isDesktop ? 8 : 12
-            });
+            // FASE 7 — Scroll Horizontal e Carrossel Mobile
+            if (isDesktop) {
+                mainTl.to('.hitboxes-container, .stage', {
+                    x: () => {
+                        const container = document.querySelector('.hitboxes-container');
+                        return -(container.scrollWidth - window.innerWidth);
+                    },
+                    ease: "none",
+                    duration: 8
+                });
 
-            mainTl.to('.stage, .galeria-ui, .default-footer', { opacity: 0, pointerEvents: "none", duration: 2, ease: "power2.inOut" });
+                mainTl.to('.stage, .galeria-ui, .default-footer', { opacity: 0, pointerEvents: "none", duration: 2, ease: "power2.inOut" });
+            } else {
+                // FASE 7 (Mobile) — Lógica de Botões Carrossel
+                let mobileCurrentAlbum = 0;
+                const maxAlbums = 6; // 7 albuns totais (index 0 ao 6)
+                
+                const prevBtn = document.querySelector('.prev-btn');
+                const nextBtn = document.querySelector('.next-btn');
+
+                // Estado inicial dos botões
+                gsap.set(prevBtn, { opacity: 0, pointerEvents: "none" });
+
+                const animateGallery = () => {
+                    gsap.to('.stage, .hitboxes-container', {
+                        x: mobileCurrentAlbum * -85 + 'vw',
+                        duration: 0.6,
+                        ease: "power2.out"
+                    });
+
+                    // Atualiza estado dos botões
+                    gsap.to(prevBtn, { opacity: mobileCurrentAlbum === 0 ? 0 : 1, pointerEvents: mobileCurrentAlbum === 0 ? "none" : "auto", duration: 0.2 });
+                    gsap.to(nextBtn, { opacity: mobileCurrentAlbum === maxAlbums ? 0 : 1, pointerEvents: mobileCurrentAlbum === maxAlbums ? "none" : "auto", duration: 0.2 });
+                };
+
+                prevBtn.addEventListener('click', () => {
+                    if (mobileCurrentAlbum > 0) {
+                        mobileCurrentAlbum--;
+                        animateGallery();
+                    }
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    if (mobileCurrentAlbum < maxAlbums) {
+                        mobileCurrentAlbum++;
+                        animateGallery();
+                    }
+                });
+
+                // Gatilho avulso: apaga a galeria ao descer pro Sobre
+                gsap.to('.stage, .galeria-ui, .default-footer', {
+                    scrollTrigger: {
+                        trigger: ".about-section",
+                        start: "top bottom",
+                        end: "top center",
+                        scrub: true
+                    },
+                    opacity: 0, 
+                    pointerEvents: "none"
+                });
+            }
 
             initContentAnimations();
 
@@ -271,6 +323,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
             if (isAlbumOpen) return;
             isAlbumOpen = true;
 
+            const isMobileWidth = window.innerWidth <= 768;
+            if (isMobileWidth) {
+                // Adiciona um estado ao histórico para capturar o botão voltar
+                history.pushState({ albumOpen: true }, "", "");
+            }
+
             // Tranca scroll original principal, pra evitar timeline scrub não intencional
             document.body.style.overflow = "hidden";
 
@@ -288,14 +346,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
             });
 
             const isMobile = window.innerWidth <= 768;
-            
+
             // Resolve a precisão cirúrgica de cálculo baseada no dispositivo
             const finalWidthPx = isMobile ? (window.innerWidth * 0.8) : Math.min(window.innerWidth * 0.25, 350);
             const finalHeightPx = finalWidthPx * 1.25; // Proporção 4/5 
 
             // O topo físico da GSAP Capa deve tocar cirurgicamente o topo (ou quase) do viewport!
             // No mobile, adicionamos um pequeno respiro de 2vh para não 'colar' no topo
-            const topMargin = isMobile ? (window.innerHeight * 0.05) : 0; 
+            const topMargin = isMobile ? (window.innerHeight * 0.05) : 0;
             const yOffsetTargetinPixels = (finalHeightPx / 2) - (window.innerHeight / 2) + topMargin;
 
             gsap.to(clickedImgClass, {
@@ -374,8 +432,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     });
 
-    function closeAlbum() {
+    // FECHAR NO BOTÃO VOLTAR (MOBILE)
+    window.addEventListener('popstate', () => {
+        if (isAlbumOpen) {
+            closeAlbum(true); // Indica que o fechamento veio do histórico
+        }
+    });
+
+    function closeAlbum(fromPopState = false) {
+        if (!isAlbumOpen) return; // Segurança
         isAlbumOpen = false;
+
+        const isMobileWidth = window.innerWidth <= 768;
+        if (isMobileWidth && !fromPopState) {
+            // Se fechou clicando fora no mobile, removemos o estado "fantasma" do histórico
+            history.back();
+        }
 
         // Devolve as fotos pro fundo absoluto
         gsap.set('.stage', { zIndex: 1 });
