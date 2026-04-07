@@ -173,39 +173,6 @@
         margin: 0 auto;
     }
 
-    /* CAROUSEL NAVIGATION BUTTONS */
-    .mobile-nav-btn {
-        display: flex;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 12vw;
-        height: 12vw;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .prev-btn { left: 4vw; }
-    .next-btn { right: 4vw; }
-
-    .mobile-nav-btn:active {
-        background: rgba(255, 255, 255, 0.3);
-        transform: translateY(-50%) scale(0.9);
-    }
-
-    .mobile-nav-btn:disabled, .mobile-nav-btn[style*="opacity: 0"] {
-        pointer-events: none;
-    }
-
     .default-footer {
         padding: 2vh 6vw;
         align-items: center;
@@ -243,6 +210,48 @@
     .album-label p {
         font-size: 3.2vw;
         margin-top: 0.5vh;
+    }
+
+    /* Controles Navegação de Seta (Mobile) */
+    .mobile-slider-controls {
+        display: flex;
+        position: absolute;
+        bottom: 11vh; /* Move for between the album image and the 07 GALERIA footer */
+        top: auto; /* Remove top centering */
+        left: 50%;
+        width: auto;
+        transform: translateX(-50%);
+        gap: 12vw; /* Spacing between the arrows since they are side by side now */
+        justify-content: center;
+        padding: 0;
+        pointer-events: none; /* Container não bloqueia clicks nas capas */
+        z-index: 100;
+        opacity: 0;           /* JS revelará */
+    }
+
+    .slider-btn {
+        background: rgba(20, 20, 20, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 50%;
+        width: 12vw;
+        height: 12vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        pointer-events: auto; /* Botões clicáveis */
+        backdrop-filter: blur(5px);
+        transition: background 0.3s ease;
+    }
+    
+    .slider-btn:active {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .slider-btn svg {
+        width: 6vw;
+        height: 6vw;
     }
 
     /* Hitboxes para touch mais generosas */
@@ -308,7 +317,7 @@
 
     .img-c5 {
         bottom: 5%;
-        left: 20%;
+        left:20%;
         transform: rotate(-8deg) scale(0.9);
     }
 
